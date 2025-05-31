@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Portfolio Moch Alriz</title>
+
+  <!-- Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  />
+
+  <style>
+    :root {
+      --bg-color: #f8f9fa;
+      --sidebar-bg: #ffffff;
+      --accent-color: #007bff;
+      --text-color: #343a40;
+      --text-muted: #6c757d;
+      --hover-color: #0056b3;
+      --card-bg: #ffffff;
+      --shadow-color: rgba(0, 123, 255, 0.15);
+      --border-color: #dee2e6;
+    }
+
+    /* Reset & basics */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      margin: 0;
+      padding-left: 80px;
+      line-height: 1.6;
+      scroll-behavior: smooth;
+    }
+
+    a {
+      color: var(--accent-color);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    a:hover {
+      color: var(--hover-color);
+    }
+
+    /* Sidebar */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 80px;
+      height: 100vh;
+      background-color: var(--sidebar-bg);
+      box-shadow: 2px 0 8px var(--shadow-color);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 0;
+      transition: width 0.3s ease;
+      z-index: 1001;
+    }
+
+    .sidebar:hover {
+      width: 200px;
+    }
+
+    .sidebar .logo {
+      font-size: 2rem;
+      color: var(--accent-color);
+      margin-bottom: 3rem;
+      user-select: none;
+    }
+
+    .sidebar-nav {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      color: var(--text-color);
+      font-weight: 500;
+      transition: background-color 0.3s, color 0.3s;
+      cursor: pointer;
+      white-space: nowrap;
+      border-left: 4px solid transparent;
+    }
+
+    .nav-link i {
+      min-width: 24px;
+      font-size: 1.2rem;
+      margin-right: 1rem;
+      transition: transform 0.3s ease;
+      color: var(--accent-color);
+    }
+
+    .nav-link:hover {
+      background-color: #e9ecef;
+      color: var(--accent-color);
+      border-left-color: var(--accent-color);
+    }
+
+    .nav-link:hover i {
+      transform: scale(1.2);
+      color: var(--hover-color);
+    }
+
+    .sidebar:hover .nav-link span {
+      opacity: 1;
+      transition-delay: 0.2s;
+    }
+
+    .nav-link span {
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      font-weight: 600;
+    }
+
+    .nav-link.active {
+      background-color: var(--accent-color);
+      color: white;
+      border-left-color: white;
+    }
+
+    .nav-link.active i {
+      color: white;
+      transform: scale(1.2);
+    }
+
+    /* Hero Section */
+    #hero {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 0 2rem;
+      background: linear-gradient(135deg, #e9ecef, #f8f9fa);
+      color: var(--text-color);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    #hero.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #hero h1 {
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: var(--accent-color);
+      user-select: none;
+    }
+
+    #hero p {
+      font-size: 1.25rem;
+      max-width: 600px;
+      margin: 0 auto 2rem;
+      color: var(--text-muted);
+    }
+
+    .btn {
+      background-color: var(--accent-color);
+      color: white;
+      padding: 1rem 2.5rem;
+      font-weight: 600;
+      border-radius: 30px;
+      box-shadow: 0 4px 12px var(--shadow-color);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      display: inline-block;
+      user-select: none;
+    }
+
+    .btn:hover {
+      background-color: var(--hover-color);
+      box-shadow: 0 6px 18px rgba(0, 86, 179, 0.5);
+    }
+
+    /* Sections general */
+    section {
+      padding: 4rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto 4rem auto;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+      color: var(--text-color);
+    }
+
+    section.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Projects Sections */
+    .project-section {
+      background-color: #f1f3f5;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px var(--shadow-color);
+      padding: 3rem 2rem;
+    }
+
+    .project-section h2 {
+      font-size: 2.75rem;
+      margin-bottom: 2rem;
+      color: var(--accent-color);
+      font-weight: 700;
+      text-align: center;
+      user-select: none;
+    }
+
+    .project-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      padding: 0 1rem;
+    }
+
+    .project-card {
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .project-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+    }
+
+    .media-container {
+      position: relative;
+      width: 100%;
+      height: 180px;
+      overflow: hidden;
+    }
+
+    .project-media {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-bottom: 1px solid var(--border-color);
+      user-select: none;
+    }
+
+    .project-card .content {
+      padding: 1.25rem 1.5rem;
+      color: var(--text-color);
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .project-card h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: var(--accent-color);
+      user-select: none;
+    }
+
+    .project-card p {
+      flex-grow: 1;
+      font-size: 1rem;
+      color: var(--text-muted);
+    }
+
+    /* Video Card Specific Styles */
+    .video-card .play-button {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 123, 255, 0.8);
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 0.3s;
+      z-index: 2;
+    }
+
+    .video-card:hover .play-button {
+      opacity: 1;
+    }
+
+    .video-card video {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* About Section */
+    #about {
+      max-width: 800px;
+      text-align: center;
+      margin: 0 auto;
+    }
+
+    #about h2 {
+      font-size: 2.75rem;
+      margin-bottom: 1.5rem;
+      color: var(--accent-color);
+      font-weight: 700;
+      user-select: none;
+    }
+
+    #about p {
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      color: var(--text-color);
+    }
+
+    #about ul {
+      list-style: none;
+      padding-left: 0;
+      text-align: left;
+      max-width: 400px;
+      margin: 1rem auto 0 auto;
+      color: var(--text-muted);
+    }
+
+    #about ul li {
+      margin-bottom: 0.75rem;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Contact Section */
+    #contact {
+      max-width: 600px;
+      text-align: center;
+      margin: 0 auto;
+    }
+
+    #contact h2 {
+      font-size: 2.75rem;
+      margin-bottom: 1.5rem;
+      color: var(--accent-color);
+      font-weight: 700;
+      user-select: none;
+    }
+
+    #contact p {
+      font-size: 1.1rem;
+      margin-bottom: 1.5rem;
+      color: var(--text-color);
+    }
+
+    .contact-list {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      justify-content: center;
+      max-width: 320px;
+      margin: 0 auto;
+    }
+
+    .contact-list li {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      user-select: none;
+    }
+
+    .contact-list li i {
+      color: var(--accent-color);
+      font-size: 1.4rem;
+      transition: transform 0.3s ease;
+      min-width: 24px;
+      text-align: center;
+    }
+
+    .contact-list li a {
+      color: var(--text-color);
+    }
+
+    /* Modal Styles */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.6);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1100;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-content {
+      position: relative;
+      max-width: 90vw;
+      max-height: 90vh;
+      background-color: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    .modal-content img,
+    .modal-content video {
+      display: block;
+      max-width: 100%;
+      max-height: 80vh;
+      object-fit: contain;
+      user-select: none;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 0.5rem;
+      right: 1rem;
+      font-size: 2rem;
+      color: var(--accent-color);
+      cursor: pointer;
+      user-select: none;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 1rem 0;
+      color: var(--text-muted);
+      user-select: none;
+      font-size: 0.9rem;
+    }
+
+    .fa-instagram {
+      color: #E1306C;
+    }
+  </style>
+</head>
+<body>
+  <nav class="sidebar" aria-label="Sidebar Navigation">
+    <div class="logo" aria-label="Logo">AL</div>
+    <div class="sidebar-nav" role="navigation" aria-orientation="vertical">
+      <a href="#hero" class="nav-link active" aria-current="page">
+        <i class="fa-solid fa-house"></i>
+        <span>Home</span>
+      </a>
+      <a href="#photo-projects" class="nav-link">
+        <i class="fa-solid fa-camera"></i>
+        <span>Photo Projects</span>
+      </a>
+      <a href="#video-projects" class="nav-link">
+        <i class="fa-solid fa-video"></i>
+        <span>Video Projects</span>
+      </a>
+      <a href="#about" class="nav-link">
+        <i class="fa-solid fa-user"></i>
+        <span>About</span>
+      </a>
+      <a href="#contact" class="nav-link">
+        <i class="fa-solid fa-envelope"></i>
+        <span>Contact</span>
+      </a>
+    </div>
+  </nav>
+
+  <main>
+    <section id="hero" class="active" tabindex="-1">
+      <div>
+        <h1>Hey, My Name Moch Alriz</h1>
+        <p>Web Developer | UI/UX Enthusiast | Desaign Grafis</p>
+        <a href="#photo-projects" class="btn" role="button">View My Work</a>
+      </div>
+    </section>
+
+    <!-- Photo Projects Section -->
+    <section id="photo-projects" class="project-section" tabindex="-1" aria-label="Photo Projects Section">
+      <h2>Photo Projects</h2>
+      <div class="project-cards" id="photo-cards">
+        <!-- Photo cards will be inserted here by JavaScript -->
+      </div>
+    </section>
+
+    <!-- Video Projects Section -->
+    <section id="video-projects" class="project-section" tabindex="-1" aria-label="Video Projects Section">
+      <h2>Video Projects</h2>
+      <div class="project-cards" id="video-cards">
+        <!-- Video cards will be inserted here by JavaScript -->
+      </div>
+    </section>
+
+    <section id="about" tabindex="-1" aria-label="About Section">
+      <h2>About Me</h2>
+      <p>Halo! Saya Moch Alriz, seorang pelajar dari SMK Wahidin dengan keahlian di bidang desain grafis. Saya tertarik dalam menciptakan karya visual yang menarik dan komunikatif.</p>
+      <ul>
+        <li><i class="fa-solid fa-check"></i> Desain Grafis</li>
+        <li><i class="fa-solid fa-check"></i> Adobe Photoshop & Illustrator</li>
+        <li><i class="fa-solid fa-check"></i> Kreativitas dan Penyelesaian Masalah</li>
+      </ul>
+    </section>
+
+    <section id="contact" tabindex="-1" aria-label="Contact Section">
+      <h2>Contact Me</h2>
+      <p>Feel free to reach out through any of the platforms below:</p>
+      <ul class="contact-list">
+        <li><i class="fa-brands fa-github"></i> <a href="https://github.com/alrzzky" target="_blank" rel="noopener noreferrer">alrzzky</a></li>
+        <li><i class="fa-brands fa-linkedin"></i> <a href="www.linkedin.com/in/moch-alrizzky-576152369" target="_blank" rel="noopener noreferrer">Alrzzky</a></li>
+        <li><i class="fa-solid fa-envelope"></i> <a href="mailto:cdrrizky23@gmail.com">cdrrizky23@gmail.com</a></li>
+        <li><i class="fa-brands fa-instagram"></i> <a href="https://www.instagram.com/smthhlikeyouu/" target="_blank" rel="noopener noreferrer">smthhlikeyouu</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <!-- Modal for project images and videos -->
+  <div class="modal-overlay" id="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title" tabindex="-1">
+    <div class="modal-content" id="modal-content">
+      <span class="modal-close" id="modal-close" role="button" aria-label="Close modal">&times;</span>
+      <!-- Content will be inserted here by JS -->
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 Moch Alriz
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Navigation
+      const navLinks = document.querySelectorAll('.nav-link');
+      const sections = ['hero', 'photo-projects', 'video-projects', 'about', 'contact'];
+      
+      // Handle sidebar link activation and smooth scrolling
+      navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          const targetId = this.getAttribute('href').substring(1);
+          const targetSection = document.getElementById(targetId);
+
+          // Scroll smoothly
+          targetSection.scrollIntoView({ behavior: 'smooth' });
+
+          // Update active link
+          navLinks.forEach(l => l.classList.remove('active'));
+          this.classList.add('active');
+
+          // Focus the section for accessibility
+          targetSection.focus();
+        });
+      });
+
+      // Photo Projects Data
+      const photoProjects = [
+        {
+          title: 'McLaren P1',
+          desc: 'McLaren P1 – A hybrid hypercar legend (2013–2015) combining a 3.8L twin-turbo V8 (727 HP) with an electric motor (176 HP) for 903 HP total.',
+          img: 'mclaren.png'
+        },
+        {
+          title: 'Porsche 911 GT3 PINK',
+          desc: 'Porsche 911 GT3 – A track-focused beast with a 4.0L NA flat-six (502 HP, 9,000 RPM redline), rear-wheel drive, and race-bred aerodynamics. Hits 0-60 mph in 3.2s and 197 mph top speed. Raw, lightweight, and thrilling—a street-legal race car',
+          img: 'cars.jpg'
+        },
+        {
+          title: 'Lamine Yamal',
+          desc: 'Lamine Yamal (full name: Lamine Yamal Nasraoui Ebana) is a rising Spanish football star, born on July 13, 2007, in Mataró, Spain. A winger or forward, he is known for his explosive speed, dribbling, and creativity.',
+          img: 'kipli.png'
+        },
+      ];
+
+      // Video Projects Data
+      const videoProjects = [
+        {
+          title: 'Tumblr Girls - Alightmotion',
+          desc: 'Tumblr Girls" by G-Eazy is a smooth, nostalgic hip-hop track reflecting on fleeting relationships with idealized "Tumblr girls"—stylish, enigmatic women popularized by the Tumblr era. The song blends melancholic vibes with G-Eazy s signature laid-back flow, touching on love, fame, and the emptiness of superficial connections.',
+          video: 'tumbler.mp4',
+          thumbnail: 'tumbler.jpg'
+        },
+        {
+          title: 'Goyounjung - Mograph Alight Motion',
+          desc: '"Goyounjung" (고윤정) is a Korean name, typically written as Go Youn-jung (or Ko Yoon-jung). She is a South Korean actress, known for her roles in dramas like "Alchemy of Souls" (2022) and "Sweet Home" (2020).',
+          video: 'gyj.mp4',
+          thumbnail: 'gyj.jpg'
+        },
+        {
+          title: 'We dont talk anymore - Alightmotion',
+          desc: '"We Dont Talk Anymore" by Charlie Puth ft. Selena Gomez is a bittersweet pop song about the lingering emotions after a breakup, where two ex-lovers have moved on but still think about each other.',
+          video: 'girl.mp4',
+          thumbnail: 'girl.jpeg'
+        },
+        {
+          title: 'Sza - Saturn.',
+          desc: 'Snooze by SZA is a smooth, dreamy R&B track about loyalty and devotion in a relationship. The lyrics highlight the singers willingness to prioritize her partner, even over sleep ("I’d never snooze you for no one"). With its laid-back vibe and soulful vocals, the song captures themes of love, trust, and commitment.',
+          video: 'sza1.mp4',
+          thumbnail: 'saturn.jpg'
+        },
+        {
+          title: 'Sza - Saturn Pt2.',
+          desc: 'Snooze by SZA is a smooth, dreamy R&B track about loyalty and devotion in a relationship. The lyrics highlight the singers willingness to prioritize her partner, even over sleep ("I’d never snooze you for no one"). With its laid-back vibe and soulful vocals, the song captures themes of love, trust, and commitment.',
+          video: 'sza.mp4',
+          thumbnail: 'saturn.jpg'
+        },
+        {
+          title: 'Gmv Mobile Legends - Alightmotion',
+          desc: 'A GMV (Game Music Video) is a type of video that combines game footage (gameplay, cutscenes, or cinematic sequences) with music, creating a synchronized and often cinematic experience. These videos can be fan-made or official, serving as tributes, trailers, or artistic reinterpretations of a game’s story and atmosphere.',
+          video: 'ml.mp4',
+          thumbnail: 'ml.jpeg'
+        },
+         {
+          title: 'About You 1975 [PMV - Typhography] Alight Motion Edit',
+          desc: '360-degree showcase of our latest vehicle model.',
+          video: 'about.mp4',
+          thumbnail: '1975.jpg'
+        },
+         {
+          title: 'About You 1975 Pt2 [PMV - Typhography] Alight Motion Edit',
+          desc: '360-degree showcase of our latest vehicle model.',
+          video: 'kezi.mp4',
+          thumbnail: '32.jpg'
+        },
+         {
+          title: 'Bubur Di Edit - Alightmotion',
+          desc: '360-degree showcase of our latest vehicle model.',
+          video: 'bubur.mp4',
+          thumbnail: 'bubur.jpeg'
+        },
+      ];
+
+      // Create Photo Project Cards
+      const photoContainer = document.getElementById('photo-cards');
+      photoProjects.forEach(project => {
+        const card = document.createElement('div');
+        card.className = 'project-card';
+        card.setAttribute('tabindex', '0');
+        card.setAttribute('role', 'button');
+        card.setAttribute('aria-label', `${project.title}: ${project.desc}`);
+
+        card.innerHTML = `
+          <div class="media-container">
+            <img src="${project.img}" alt="${project.title}" class="project-media">
+          </div>
+          <div class="content">
+            <h3>${project.title}</h3>
+            <p>${project.desc}</p>
+          </div>
+        `;
+
+        // Open modal on click
+        card.addEventListener('click', () => openModal(project));
+        card.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            openModal(project);
+          }
+        });
+
+        photoContainer.appendChild(card);
+      });
+
+      // Create Video Project Cards
+      const videoContainer = document.getElementById('video-cards');
+      videoProjects.forEach(project => {
+        const card = document.createElement('div');
+        card.className = 'project-card video-card';
+        card.setAttribute('tabindex', '0');
+        card.setAttribute('role', 'button');
+        card.setAttribute('aria-label', `${project.title}: ${project.desc}`);
+
+        card.innerHTML = `
+          <div class="media-container">
+            <video class="project-media" poster="${project.thumbnail}" muted loop playsinline>
+              <source src="${project.video}" type="video/mp4">
+            </video>
+            <div class="play-button" aria-label="Play video">
+              <i class="fas fa-play" aria-hidden="true"></i>
+            </div>
+          </div>
+          <div class="content">
+            <h3>${project.title}</h3>
+            <p>${project.desc}</p>
+          </div>
+        `;
+
+        // Handle video play on click
+        const video = card.querySelector('video');
+        const playBtn = card.querySelector('.play-button');
+        
+        playBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          video.play();
+          playBtn.style.display = 'none';
+        });
+        
+        video.addEventListener('click', (e) => {
+          e.stopPropagation();
+          video.pause();
+          playBtn.style.display = 'flex';
+        });
+
+        // Open modal on card click (not on video/button)
+        card.addEventListener('click', (e) => {
+          if (e.target === card || e.target.classList.contains('content')) {
+            openModal(project);
+          }
+        });
+
+        videoContainer.appendChild(card);
+      });
+
+      // Modal functionality
+      const modalOverlay = document.getElementById('modal-overlay');
+      const modalContent = document.getElementById('modal-content');
+      const modalClose = document.getElementById('modal-close');
+
+      function openModal(project) {
+        let mediaContent;
+        
+        if (project.video) {
+          mediaContent = `
+            <video controls autoplay muted playsinline style="max-width:100%; max-height:80vh;">
+              <source src="${project.video}" type="video/mp4">
+              Your browser does not support HTML5 video.
+            </video>
+          `;
+        } else {
+          mediaContent = `
+            <img src="${project.img}" alt="${project.title}" style="max-width:100%; max-height:80vh;" />
+          `;
+        }
+        
+        modalContent.innerHTML = `
+          <span class="modal-close" id="modal-close" role="button" aria-label="Close modal">&times;</span>
+          ${mediaContent}
+        `;
+        
+        // Re-add event listener for close button
+        document.getElementById('modal-close').addEventListener('click', closeModal);
+        modalOverlay.classList.add('active');
+        
+        // Focus close button for accessibility
+        document.getElementById('modal-close').focus();
+      }
+
+      function closeModal() {
+        // Pause any playing video before closing
+        const video = modalContent.querySelector('video');
+        if (video) {
+          video.pause();
+        }
+        modalOverlay.classList.remove('active');
+      }
+
+      // Close modal when clicking outside content
+      modalOverlay.addEventListener('click', e => {
+        if (e.target === modalOverlay) closeModal();
+      });
+
+      // Close modal on Escape key
+      window.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
+          closeModal();
+        }
+      });
+
+      // Intersection Observer for section animations
+      const observerOptions = {
+        threshold: 0.2,
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('active');
+            
+            // Update active nav link
+            const id = entry.target.id;
+            navLinks.forEach(link => {
+              if (link.getAttribute('href').substring(1) === id) {
+                navLinks.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+              }
+            });
+          }
+        });
+      }, observerOptions);
+
+      // Observe all sections
+      sections.forEach(id => {
+        const section = document.getElementById(id);
+        if (section) observer.observe(section);
+      });
+
+      // Activate hero section by default
+      document.getElementById('hero').classList.add('active');
+    });
+  </script>
+</body>
+</html>
